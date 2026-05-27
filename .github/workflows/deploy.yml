@@ -10,18 +10,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v5
+    - name: Checkout
+      uses: actions/checkout@v4
 
-      - name: Test SSH
-        uses: appleboy/ssh-action@v1.2.2
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ubuntu
+        key: ${{ secrets.EC2_SSH_KEY }}
 
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ubuntu
-          key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          cd /home/ubuntu/fullstack-app
 
-          script: |
-            whoami
-            hostname
-            pwd
+          git pull origin main
+
+          docker compose down
+
+          docker compose up -d --build
