@@ -12,7 +12,7 @@ function App() {
 
   return (
     <div>
-      <h1>Infocare Full Stack App second version</h1>
+      <h1>Infocare Full Stack App second second version</h1>
 
       <p>{data.message}</p>
 
